@@ -59,9 +59,9 @@ export const createPixQrCode = async (email: string): Promise<PixQrCodeData> => 
 
 export const checkPixPaymentStatus = async (id: string): Promise<PaymentStatusData> => {
     try {
-        // The endpoint for checking a PIX transaction status is likely more general.
-        // Changed from /pixQrCode/{id} to /pix/{id} to fix the "Not Found" error.
-        const response = await fetch(`${ABACATEPAY_API_BASE_URL}/pix/${id}`, {
+        // Correcting the endpoint based on the provided curl command.
+        // The URL should be /pixQrCode/check with a query parameter 'id'.
+        const response = await fetch(`${ABACATEPAY_API_BASE_URL}/pixQrCode/check?id=${id}`, {
             method: 'GET',
         });
         return await handleResponse<PaymentStatusData>(response);
