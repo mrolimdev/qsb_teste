@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/abacatepay/(.*)",
-      "destination": "/api/abacatepay"
+      "destination": "/api/abacatepay/[...proxy]"
     }
   ]
 }
