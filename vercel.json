@@ -3,6 +3,10 @@
     {
       "source": "/api/abacatepay/(.*)",
       "destination": "/api/abacatepay/[...proxy]"
+    },
+    {
+      "source": "/api-proxy/(.*)",
+      "destination": "/api-proxy/[...proxy]"
     }
   ]
 }
