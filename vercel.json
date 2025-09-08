@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/abacatepay/[...proxy].ts": {
-      "runtime": "edge"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/abacatepay/(.*)",
