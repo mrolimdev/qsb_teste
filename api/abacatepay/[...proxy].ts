@@ -11,9 +11,10 @@ export const config = {
 export default async function handler(request: Request) {
   try {
     const requestUrl = new URL(request.url);
-    // Reconstruct the target URL by taking the path after /api/abacatepay
+    // Reconstruct the target URL by taking the path and search params from the original request
     const path = requestUrl.pathname.replace('/api/abacatepay', '');
-    const abacatepayApiUrl = `https://api.abacatepay.com/v1${path}`;
+    const search = requestUrl.search; // This captures the query string (e.g., "?id=...")
+    const abacatepayApiUrl = `https://api.abacatepay.com/v1${path}${search}`;
 
     // Get the API key from environment variables on the server
     const apiKey = process.env.ABACATEPAY_API_KEY;
