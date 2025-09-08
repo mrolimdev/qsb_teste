@@ -59,7 +59,7 @@ export const createPixQrCode = async (email: string): Promise<PixQrCodeData> => 
 
 export const checkPixPaymentStatus = async (id: string): Promise<PaymentStatusData> => {
     try {
-        const response = await fetch(`${ABACATEPAY_API_BASE_URL}/pixQrCode/find/${id}`, {
+        const response = await fetch(`${ABACATEPAY_API_BASE_URL}/pixQrCode/${id}`, {
             method: 'GET',
         });
         return await handleResponse<PaymentStatusData>(response);
