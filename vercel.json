@@ -1,1 +1,8 @@
-{}
+{
+  "rewrites": [
+    {
+      "source": "/api/abacatepay/(.*)",
+      "destination": "/api/abacatepay"
+    }
+  ]
+}
