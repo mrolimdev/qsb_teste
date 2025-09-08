@@ -21,7 +21,7 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
 
     if (data.error) {
         console.error('AbacatePay API Error Response (via proxy):', data.error);
-        throw new Error(data.error.message || `API returned an error: ${JSON.stringify(data.error)}`);
+        throw new Error(data.error.message || `API returned an error: "${data.error.code}"`);
     }
 
     if (!response.ok) {
@@ -59,7 +59,9 @@ export const createPixQrCode = async (email: string): Promise<PixQrCodeData> => 
 
 export const checkPixPaymentStatus = async (id: string): Promise<PaymentStatusData> => {
     try {
-        const response = await fetch(`${ABACATEPAY_API_BASE_URL}/pixQrCode/${id}`, {
+        // The endpoint for checking a PIX transaction status is likely more general.
+        // Changed from /pixQrCode/{id} to /pix/{id} to fix the "Not Found" error.
+        const response = await fetch(`${ABACATEPAY_API_BASE_URL}/pix/${id}`, {
             method: 'GET',
         });
         return await handleResponse<PaymentStatusData>(response);
