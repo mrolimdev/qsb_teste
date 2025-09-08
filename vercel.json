@@ -5,8 +5,8 @@
       "destination": "/api/abacatepay/[...proxy]"
     },
     {
-      "source": "/api-proxy/(.*)",
-      "destination": "/api-proxy/[...proxy]"
+      "source": "/api/gemini/(.*)",
+      "destination": "/api/gemini/[...proxy]"
     }
   ]
 }
