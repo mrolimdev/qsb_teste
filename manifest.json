@@ -1,0 +1,24 @@
+
+{
+  "name": "Quem sou eu na Bíblia",
+  "short_name": "Teste Bíblico",
+  "description": "Um teste de personalidade que revela com qual personagem bíblico você mais se parece.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f5f5f4",
+  "theme_color": "#D97706",
+  "icons": [
+    {
+      "src": "https://sites.arquivo.download/Quem%20Sou%20Eu%20na%20Biblia/Logo%20compacto%20Quem%20sou%20eu%20na%20Bi%CC%81blia.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://sites.arquivo.download/Quem%20Sou%20Eu%20na%20Biblia/Logo%20compacto%20Quem%20sou%20eu%20na%20Bi%CC%81blia.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
