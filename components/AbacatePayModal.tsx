@@ -91,7 +91,7 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
       } finally {
         setIsChecking(false);
       }
-    }, 3000);
+    }, 10000); // Check every 10 seconds
 
     return () => clearInterval(interval);
   }, [step, qrData, onPaymentSuccess, isChecking]);
@@ -141,7 +141,7 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
       case 'display_qr':
         return (
           <div className="text-center">
-            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">{t('payment_modal_promo_title')}</h3>
+            <h3 className="text-sm font-bold text-red-600 uppercase tracking-wider">{t('payment_modal_promo_title')}</h3>
             <p className="text-gray-500 line-through mt-2">{t('payment_modal_original_price')}</p>
             <p className="text-sm text-stone-800">{t('payment_modal_for_just')}</p>
             <p className="text-5xl font-bold text-amber-600 my-1">{`R$ ${pixValue}`}</p>
@@ -151,11 +151,15 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
             
             <div className="my-4">
               <button 
-                onClick={handleCopy} 
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-stone-200 text-stone-800 font-bold rounded-lg hover:bg-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
+                onClick={handleCopy}
+                className={`w-full flex items-center justify-center gap-2 px-4 py-3 font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors ${
+                  isCopied
+                    ? 'bg-green-700 text-white'
+                    : 'bg-green-600 text-white hover:bg-green-700'
+                }`}
               >
-                  {isCopied ? <CheckCircleIcon className="w-6 h-6 text-green-600" /> : <ClipboardCopyIcon className="w-6 h-6" />}
-                  <span>{isCopied ? t('results_link_copied') : t('payment_modal_copy_button')}</span>
+                {isCopied ? <CheckCircleIcon className="w-6 h-6" /> : <ClipboardCopyIcon className="w-6 h-6" />}
+                <span>{isCopied ? t('results_link_copied') : t('payment_modal_copy_button')}</span>
               </button>
             </div>
 
