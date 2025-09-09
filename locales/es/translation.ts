@@ -230,7 +230,13 @@ export default {
   "study_plan_subtitle_questions": "2. Preguntas de Reflexión",
   "study_plan_subtitle_prayer": "3. Oración Guiada",
 
-  "payment_modal_promo_text": "Precio Promocional: R$ 47,90 vía PIX para acceso inmediato.",
+  "payment_modal_secure_title": "Entorno 100% Seguro",
+  "payment_modal_promo_title": "Oferta Especial de Lanzamiento",
+  "payment_modal_original_price": "de $99,90",
+  "payment_modal_new_price": "por solo $49,90",
+  "payment_modal_instant_access": "Acceso vitalicio e inmediato vía PIX",
+  "payment_modal_satisfaction_guarantee": "Garantía de Satisfacción",
+  "payment_modal_secure_badge": "Compra Segura",
   "payment_modal_copy_button": "Copiar Código PIX",
   "payment_modal_success_button": "Ver mi resultado",
   "payment_modal_generating": "Generando tu PIX...",
@@ -238,9 +244,9 @@ export default {
   "payment_modal_check_payment": "Verificar Pago",
   "payment_modal_checking": "Verificando...",
   "payment_modal_paid_title": "¡Pago Aprobado!",
-  "payment_modal_paid_subtitle": "Tu acceso ha sido concedido.",
+  "payment_modal_paid_subtitle": "Tu acceso ha sido liberado.",
   "payment_modal_expired_title": "PIX Expirado",
-  "payment_modal_expired_subtitle": "El tiempo para el pago ha terminado. Por favor, genera un nuevo código.",
+  "payment_modal_expired_subtitle": "El tiempo para pagar ha terminado. Por favor, genera un nuevo código.",
   "payment_modal_generate_new": "Generar Nuevo QR Code",
   "payment_modal_error_title": "Ocurrió un Error",
 
@@ -303,7 +309,7 @@ export default {
   "filter_type8": "8 - El Protector",
   "filter_type9": "9 - El Pacificador",
 
-  "q1_text": "Al realizar una tarea importante, ¿qué es lo más crucial para ti?",
+  "q1_text": "¿Al realizar una tarea importante, qué es lo más crucial para ti?",
   "q1_a1": "Hacer todo de la manera correcta y con el más alto estándar de calidad.",
   "q1_a2": "Asegurarme de que sea un éxito y que mi esfuerzo sea reconocido.",
   "q1_a3": "Ayudar a todos los involucrados en el proceso.",
@@ -393,7 +399,7 @@ export default {
   "q15_a3": "Estoy ayudando a alguien que lo necesita.",
   "q15_a4": "Tengo el control y estoy liderando.",
 
-  "q16_text": "La rutina para ti es...",
+  "q16_text": "La rotina para ti es...",
   "q16_a1": "Aburrida y una barrera para la autoexpresión.",
   "q16_a2": "Necesaria para el orden y la perfección.",
   "q16_a3": "Cómoda y me da seguridad.",
@@ -497,27 +503,27 @@ export default {
 
   "q33_text": "En un conflicto, tu tendencia es...",
   "q33_a1": "Intentar ver todos los lados y mediar un acuerdo.",
-  "q33_a2": "Tomar un bando y defender la justicia.",
+  "q33_a2": "Tomar un lado y defender la justicia.",
   "q33_a3": "Analizar la situación para encontrar la solución más lógica.",
-  "q33_a4": "Apoyar a la persona con la que tengo más lealtad.",
+  "q33_a4": "Apoyar a la persona a la que soy más leal.",
 
-  "q34_text": "¿Qué es lo que más te cuesta decir?",
-  "q34_a1": "'No', porque no quiero crear conflictos ni decepcionar.",
+  "q34_text": "¿Qué es lo más difícil para ti decir?",
+  "q34_a1": "'No', porque no quiero crear conflicto o decepcionar.",
   "q34_a2": "'Necesito ayuda', porque no quiero ser una carga.",
-  "q34_a3": "'No lo sé', porque me gusta ser competente.",
+  "q34_a3": "'No sé', porque me gusta ser competente.",
   "q34_a4": "'Me equivoqué', porque valoro la integridad.",
 
-  "q35_text": "Tiendes a posponer las tareas que...",
-  "q35_a1": "Pueden generar conflictos o perturbar tu paz.",
+  "q35_text": "Tiendes a posponer tareas que...",
+  "q35_a1": "Podrían generar conflicto o perturbar tu paz.",
   "q35_a2": "Son aburridas y te impiden hacer algo divertido.",
-  "q35_a3": "No te parecen auténticas o significativas.",
+  "q35_a3": "No parecen auténticas o significativas para ti.",
   "q35_a4": "Requieren una actuación y te ponen en el centro de atención.",
 
   "q36_text": "Tu utopía sería un mundo donde...",
   "q36_a1": "Todos viven en armonía y se aceptan mutuamente.",
   "q36_a2": "Todo funciona de manera justa y ordenada.",
   "q36_a3": "Todos son amados y cuidados.",
-  "q36_a4": "Todos son libres para perseguir sus pasiones.",
+  "q36_a4": "Todos son libres de perseguir sus pasiones.",
 
   "q37_text": "Cuando piensas en 'hogar', ¿qué te viene a la mente?",
   "q37_a1": "Un santuario de paz y comodidad.",
@@ -525,21 +531,21 @@ export default {
   "q37_a3": "Un espacio que refleja mi identidad única.",
   "q37_a4": "Una base de operaciones para mis aventuras.",
 
-  "q38_text": "¿Qué tipo de amigo eres?",
-  "q38_a1": "El protector, que defiende a sus amigos con uñas y dientes.",
-  "q38_a2": "El servicial, siempre dispuesto a ayudar, sin importar la hora.",
-  "q38_a3": "El leal, que está presente en las buenas y en las malas.",
-  "q38_a4": "El consejero, que ofrece una perspectiva lógica y ponderada.",
+  "q38_text": "¿Qué tipo de amigo(a) eres?",
+  "q38_a1": "El/la protector(a), que defiende a los amigos a capa y espada.",
+  "q38_a2": "El/la servicial, siempre listo(a) para ayudar, sin importar la hora.",
+  "q38_a3": "El/la leal, que está presente en los buenos y malos momentos.",
+  "q38_a4": "El/la consejero(a), que ofrece una perspectiva lógica y reflexiva.",
 
   "q39_text": "¿Cómo manejas las reglas?",
-  "q39_a1": "Las sigo, porque traen orden y justicia.",
+  "q39_a1": "Las sigo, ya que traen orden y justicia.",
   "q39_a2": "Las cuestiono para ver si tienen sentido y son seguras.",
   "q39_a3": "Las veo como directrices, pero prefiero tener libertad.",
   "q39_a4": "Tiendo a desafiarlas, especialmente si las considero injustas.",
 
-  "q40_text": "Cuando un plan cuidadosamente elaborado cambia a última hora, tú:",
+  "q40_text": "Cuando un plan cuidadosamente hecho cambia a última hora, tú:",
   "q40_a1": "Te sientes frustrado(a) por la ruptura del orden, pero te adaptas para hacer lo correcto.",
   "q40_a2": "¡Lo ves como una oportunidad para algo nuevo y emocionante!",
-  "q40_a3": "Te pones ansioso(a) y buscas un nuevo plan seguro lo antes posible.",
-  "q40_a4": "Lo aceptas con calma, porque entiendes que no todo está bajo nuestro control."
-}
+  "q40_a3": "Te pones ansioso(a) y buscas un nuevo plan seguro lo más rápido posible.",
+  "q40_a4": "Lo aceptas con calma, ya que entiendes que no todo está bajo nuestro control."
+};

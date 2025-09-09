@@ -229,8 +229,14 @@ export default {
   "study_plan_subtitle_readings": "1. Leituras-Chave",
   "study_plan_subtitle_questions": "2. Perguntas para Reflexão",
   "study_plan_subtitle_prayer": "3. Oração Guiada",
-  
-  "payment_modal_promo_text": "Valor Promocional: R$ 47,90 no PIX para acesso imediato.",
+
+  "payment_modal_secure_title": "Ambiente 100% Seguro",
+  "payment_modal_promo_title": "Oferta Especial de Lançamento",
+  "payment_modal_original_price": "de R$ 99,90",
+  "payment_modal_new_price": "por apenas R$ 49,90",
+  "payment_modal_instant_access": "Acesso vitalício e imediato via PIX",
+  "payment_modal_satisfaction_guarantee": "Garantia de Satisfação",
+  "payment_modal_secure_badge": "Compra Segura",
   "payment_modal_copy_button": "Copiar Código PIX",
   "payment_modal_success_button": "Ver meu resultado",
   "payment_modal_generating": "Gerando seu PIX...",
