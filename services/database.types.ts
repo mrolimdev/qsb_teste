@@ -156,6 +156,21 @@ export type Database = {
         }
         Relationships: []
       }
+      qsb_config: {
+        Row: {
+          nomeconfig: string
+          valorconfig: string | null
+        }
+        Insert: {
+          nomeconfig: string
+          valorconfig?: string | null
+        }
+        Update: {
+          nomeconfig?: string
+          valorconfig?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>

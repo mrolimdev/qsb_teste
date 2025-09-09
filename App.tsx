@@ -13,7 +13,7 @@ import CharacterForm from './components/CharacterForm';
 import Loader from './components/Loader';
 import { Character, EneagramaTrait, Scores, Screen, UserInfo, UserProfile } from './types';
 import { generateCharacterProfile } from './services/geminiService';
-import { getUserProfile, updateUserName, saveQuizResult, upsertUserProfile, getCharacters } from './services/databaseService';
+import { getUserProfile, updateUserName, saveQuizResult, upsertUserProfile, getCharacters, getPixValue } from './services/databaseService';
 import { SEND_CODE_WEBHOOK_URL, ADMIN_EMAIL } from './config';
 import AICharacterModal from './components/AICharacterModal';
 import { useTranslation } from 'react-i18next';
@@ -81,6 +81,7 @@ const App: React.FC = () => {
   const [isGeneratingCharacter, setIsGeneratingCharacter] = useState(false);
   const [resultsViewMode, setResultsViewMode] = useState<'result' | 'profile'>('result');
   const [viewingUser, setViewingUser] = useState<UserProfile | null>(null);
+  const [pixValue, setPixValue] = useState<string | null>(null);
 
   useEffect(() => {
     document.documentElement.lang = i18n.language;
@@ -116,11 +117,16 @@ const App: React.FC = () => {
         setIsAdmin(false);
       }
       
-      const fetchedCharacters = await getCharacters();
+      const [fetchedCharacters, fetchedPixValue] = await Promise.all([
+        getCharacters(),
+        getPixValue()
+      ]);
       setCharacters(fetchedCharacters);
+      setPixValue(fetchedPixValue);
 
     } catch (error) {
       console.error("Failed to initialize app:", error);
+      setPixValue('49,90'); // Fallback value on error
     } finally {
       setIsLoadingApp(false);
     }
@@ -428,7 +434,7 @@ const App: React.FC = () => {
   };
   
   const renderScreen = () => {
-    if (isLoadingApp) return <div className="flex-grow flex items-center justify-center"><Loader text={t('loader_journey')} /></div>;
+    if (isLoadingApp || !pixValue) return <div className="flex-grow flex items-center justify-center"><Loader text={t('loader_journey')} /></div>;
 
     switch (currentScreen) {
       case 'welcome':
@@ -462,6 +468,7 @@ const App: React.FC = () => {
                     hasPreviousResult={hasPreviousResult}
                     characters={characters}
                     viewMode={resultsViewMode}
+                    pixValue={pixValue}
                   />;
         }
         return <WelcomeScreen onStart={handleStartTest} hasPreviousResult={hasPreviousResult} />;

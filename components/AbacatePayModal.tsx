@@ -11,11 +11,12 @@ interface AbacatePayModalProps {
   userEmail: string | null;
   onPaymentSuccess: () => Promise<void>;
   onFlowComplete: () => void;
+  pixValue: string | null;
 }
 
 type PaymentStep = 'loading_qr' | 'display_qr' | 'paid' | 'expired' | 'error';
 
-const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, userEmail, onPaymentSuccess, onFlowComplete }) => {
+const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, userEmail, onPaymentSuccess, onFlowComplete, pixValue }) => {
   const { t } = useTranslation();
   const [step, setStep] = useState<PaymentStep>('loading_qr');
   const [qrData, setQrData] = useState<PixQrCodeData | null>(null);
@@ -30,10 +31,17 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
       setStep('error');
       return;
     }
+    if (!pixValue) {
+      setErrorMessage("Valor do PIX não configurado. Tente novamente mais tarde.");
+      setStep('error');
+      return;
+    }
+
     setStep('loading_qr');
     setErrorMessage(null);
     try {
-      const data = await createPixQrCode(userEmail);
+      const amountInCents = parseInt(pixValue.replace(/[,.]/g, ''), 10);
+      const data = await createPixQrCode(userEmail, amountInCents);
       setQrData(data);
       setCountdown(600);
       setStep('display_qr');
@@ -43,7 +51,7 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
       setErrorMessage(detailedMessage);
       setStep('error');
     }
-  }, [userEmail]);
+  }, [userEmail, pixValue]);
 
   useEffect(() => {
     if (isOpen) {
@@ -135,7 +143,7 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
             <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">{t('payment_modal_promo_title')}</h3>
             <p className="text-gray-500 line-through mt-2">{t('payment_modal_original_price')}</p>
             <p className="text-sm text-stone-800">{t('payment_modal_for_just')}</p>
-            <p className="text-5xl font-bold text-amber-600 my-1">{t('payment_modal_promo_price')}</p>
+            <p className="text-5xl font-bold text-amber-600 my-1">{`R$ ${pixValue}`}</p>
             <p className="text-sm text-green-600 font-semibold mb-4">{t('payment_modal_instant_access')}</p>
             
             <img src={qrData?.brCodeBase64} alt="PIX QR Code" className="mx-auto w-48 h-48 border-4 border-stone-200 rounded-lg shadow-md" />

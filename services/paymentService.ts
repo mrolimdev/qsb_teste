@@ -1,4 +1,4 @@
-import { ABACATEPAY_API_BASE_URL, PAYMENT_AMOUNT_CENTS } from '../config';
+import { ABACATEPAY_API_BASE_URL } from '../config';
 import { PaymentStatusData, PixQrCodeData } from '../types';
 
 interface ApiResponse<T> {
@@ -36,7 +36,7 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
     return data.data;
 };
 
-export const createPixQrCode = async (email: string): Promise<PixQrCodeData> => {
+export const createPixQrCode = async (email: string, amountInCents: number): Promise<PixQrCodeData> => {
     try {
         const response = await fetch(`${ABACATEPAY_API_BASE_URL}/pixQrCode/create`, {
             method: 'POST',
@@ -47,7 +47,7 @@ export const createPixQrCode = async (email: string): Promise<PixQrCodeData> => 
                 metadata: {
                     externalId: email,
                 },
-                amount: PAYMENT_AMOUNT_CENTS,
+                amount: amountInCents,
             }),
         });
         return await handleResponse<PixQrCodeData>(response);

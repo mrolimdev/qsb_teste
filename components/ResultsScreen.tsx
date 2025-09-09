@@ -29,9 +29,10 @@ interface ResultsScreenProps {
   hasPreviousResult?: boolean;
   characters: Character[];
   viewMode: 'result' | 'profile';
+  pixValue: string | null;
 }
 
-const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userInfo, userEmail, onRetake, preloadedAnalysis, onNavigate, checkUserStatus, onStartTest, hasPreviousResult, characters, viewMode }) => {
+const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userInfo, userEmail, onRetake, preloadedAnalysis, onNavigate, checkUserStatus, onStartTest, hasPreviousResult, characters, viewMode, pixValue }) => {
   const { t, i18n } = useTranslation();
   const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | null>(userInfo);
   const [personalizedAnalysis, setPersonalizedAnalysis] = useState<Json | null>(preloadedAnalysis || null);
@@ -403,6 +404,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userIn
             setIsPaymentModalOpen(false);
             onNavigate('welcome');
         }}
+        pixValue={pixValue}
       />
     </>
   );

@@ -322,3 +322,24 @@ export const grantPremiumAccess = async (email: string): Promise<void> => {
     throw error;
   }
 };
+
+export const getPixValue = async (): Promise<string> => {
+  const { data, error } = await supabase
+    .from('qsb_config')
+    .select('valorconfig')
+    .eq('nomeconfig', 'valorpix')
+    .single();
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('Error fetching PIX value:', error.message);
+    // In case of a real error, still default to a working value
+    return '49,90';
+  }
+  
+  if (!data?.valorconfig) {
+    console.warn('PIX value not found in qsb_config, defaulting to 49,90.');
+    return '49,90'; // Default value if config is not set
+  }
+  
+  return data.valorconfig;
+};
