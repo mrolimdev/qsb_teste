@@ -224,7 +224,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userIn
       <div className="w-full bg-white rounded-2xl shadow-2xl p-6 md:p-8 animate-fade-in-up">
           <div className="text-center">
             <h2 className="text-2xl font-normal text-stone-600">{displayScores ? t('results_you_are_like', { name: currentUserInfo?.nome || t('you') }) : t('results_profile_of')}</h2>
-            <h1 className="text-5xl md:text-6xl font-bold text-amber-700 mb-2">{getTranslatedValue(character.name, i18n.language)}!</h1>
+            <h1 className="text-[38px] md:text-6xl font-bold text-amber-700 mb-2">{getTranslatedValue(character.name, i18n.language)}!</h1>
             <h3 className="text-xl md:text-2xl font-display text-stone-600 italic mb-4">{getTranslatedValue(character.tagline, i18n.language)}</h3>
             
             <img
