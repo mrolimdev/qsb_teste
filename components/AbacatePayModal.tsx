@@ -10,13 +10,12 @@ interface AbacatePayModalProps {
   onClose: () => void;
   userEmail: string | null;
   onPaymentSuccess: () => Promise<void>;
-  onFlowComplete: () => void;
   pixValue: string | null;
 }
 
 type PaymentStep = 'loading_qr' | 'display_qr' | 'paid' | 'expired' | 'error';
 
-const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, userEmail, onPaymentSuccess, onFlowComplete, pixValue }) => {
+const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, userEmail, onPaymentSuccess, pixValue }) => {
   const { t } = useTranslation();
   const [step, setStep] = useState<PaymentStep>('loading_qr');
   const [qrData, setQrData] = useState<PixQrCodeData | null>(null);
@@ -75,37 +74,40 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
     if (step !== 'display_qr' || !qrData) return;
 
     const interval = setInterval(async () => {
+      if (isChecking) return; // Prevent overlapping checks
+      setIsChecking(true);
       try {
         const statusData = await checkPixPaymentStatus(qrData.id);
         if (statusData.status === 'PAID') {
           clearInterval(interval);
-          setStep('paid');
+          await onPaymentSuccess(); // Await parent logic (DB update, navigation)
+          setStep('paid'); // Then show success screen
         }
       } catch (error) {
-        console.error("Polling error:", error);
+        console.error("Polling or success handler error:", error);
+        clearInterval(interval); // Stop polling on critical error
+        setErrorMessage(error instanceof Error ? error.message : "Falha ao liberar o acesso. Contate o suporte.");
+        setStep('error');
+      } finally {
+        setIsChecking(false);
       }
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [step, qrData]);
+  }, [step, qrData, onPaymentSuccess, isChecking]);
   
-  // Handle successful payment: update DB once.
-  useEffect(() => {
-    if (step === 'paid') {
-      onPaymentSuccess(); // Update DB and user status in the parent
-    }
-  }, [step, onPaymentSuccess]);
-
   const handleManualCheck = async () => {
-    if (!qrData) return;
+    if (!qrData || isChecking) return;
     setIsChecking(true);
     try {
       const statusData = await checkPixPaymentStatus(qrData.id);
       if (statusData.status === 'PAID') {
-        setStep('paid');
+        await onPaymentSuccess(); // Await parent logic
+        setStep('paid'); // Then show success screen
       }
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Falha ao verificar o pagamento.");
+      const defaultError = "Falha ao verificar o pagamento ou ao liberar o acesso.";
+      setErrorMessage(error instanceof Error ? error.message : defaultError);
       setStep('error');
     } finally {
       setIsChecking(false);
@@ -127,7 +129,6 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
   };
 
   const handleOverlayClick = () => {
-    // Only allow closing if the flow is finished (expired, error, or manually)
     if (['expired', 'error'].includes(step)) {
       onClose();
     }
@@ -178,7 +179,7 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
                 <h2 className="text-2xl font-bold text-stone-800">{t('payment_modal_paid_title')}</h2>
                 <p className="text-stone-600 mb-6">{t('payment_modal_paid_subtitle')}</p>
                 <button
-                  onClick={onFlowComplete}
+                  onClick={onClose}
                   className="w-full px-6 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700 transition-colors"
                 >
                   {t('payment_modal_ok_button')}

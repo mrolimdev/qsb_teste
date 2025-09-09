@@ -147,10 +147,17 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userIn
 
   const handlePaymentSuccess = async () => {
     if (!userEmail) return;
-    await grantPremiumAccess(userEmail); // Grant access in DB
-    const updatedUserInfo = await checkUserStatus(); // Fetch updated profile
-    if (updatedUserInfo) {
-        setCurrentUserInfo(updatedUserInfo);
+    try {
+      await grantPremiumAccess(userEmail); // Grant access in DB
+      const updatedUserInfo = await checkUserStatus(); // Fetch updated profile
+      if (updatedUserInfo) {
+          setCurrentUserInfo(updatedUserInfo);
+      }
+      onNavigate('welcome'); // Navigate AFTER DB work is done.
+    } catch(error) {
+        console.error("Critical Error: Payment was successful but failed to update user profile.", error);
+        // This error will be propagated to the payment modal to show an error state.
+        throw new Error("Seu pagamento foi confirmado, mas houve um erro ao liberar seu acesso. Por favor, contate o suporte.");
     }
   };
 
@@ -400,10 +407,6 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userIn
         onClose={() => setIsPaymentModalOpen(false)}
         userEmail={userEmail}
         onPaymentSuccess={handlePaymentSuccess}
-        onFlowComplete={() => {
-            setIsPaymentModalOpen(false);
-            onNavigate('welcome');
-        }}
         pixValue={pixValue}
       />
     </>
