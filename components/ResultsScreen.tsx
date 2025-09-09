@@ -151,7 +151,6 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userIn
     if (updatedUserInfo) {
         setCurrentUserInfo(updatedUserInfo);
     }
-    setIsPaymentModalOpen(false); // Close modal
   };
 
   const handleShare = async () => {
@@ -400,6 +399,10 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userIn
         onClose={() => setIsPaymentModalOpen(false)}
         userEmail={userEmail}
         onPaymentSuccess={handlePaymentSuccess}
+        onFlowComplete={() => {
+            setIsPaymentModalOpen(false);
+            onNavigate('welcome');
+        }}
       />
     </>
   );

@@ -9,12 +9,13 @@ interface AbacatePayModalProps {
   isOpen: boolean;
   onClose: () => void;
   userEmail: string | null;
-  onPaymentSuccess: () => void;
+  onPaymentSuccess: () => Promise<void>;
+  onFlowComplete: () => void;
 }
 
 type PaymentStep = 'loading_qr' | 'display_qr' | 'paid' | 'expired' | 'error';
 
-const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, userEmail, onPaymentSuccess }) => {
+const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, userEmail, onPaymentSuccess, onFlowComplete }) => {
   const { t } = useTranslation();
   const [step, setStep] = useState<PaymentStep>('loading_qr');
   const [qrData, setQrData] = useState<PixQrCodeData | null>(null);
@@ -80,12 +81,16 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
     return () => clearInterval(interval);
   }, [step, qrData]);
   
-  // Call onPaymentSuccess only when the step changes to 'paid'
+  // Handle successful payment: update DB, then trigger redirect after a delay
   useEffect(() => {
     if (step === 'paid') {
-      onPaymentSuccess();
+      onPaymentSuccess(); // Update DB and user status in the parent
+      const timer = setTimeout(() => {
+        onFlowComplete(); // This will close the modal and redirect to home
+      }, 5000); // 5 second delay
+      return () => clearTimeout(timer);
     }
-  }, [step, onPaymentSuccess]);
+  }, [step, onPaymentSuccess, onFlowComplete]);
 
   const handleManualCheck = async () => {
     if (!qrData) return;
@@ -118,7 +123,8 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
   };
 
   const handleOverlayClick = () => {
-    if (!['loading_qr', 'display_qr'].includes(step)) {
+    // Only allow closing if the flow is finished (expired, error, or manually)
+    if (['expired', 'error'].includes(step)) {
       onClose();
     }
   };
@@ -130,9 +136,10 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
       case 'display_qr':
         return (
           <div className="text-center">
-            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">{t('payment_modal_promo_title')}</h3>
-            <p className="text-4xl font-bold text-amber-600 my-2">{t('payment_modal_new_price')}</p>
-            <p className="text-gray-500 line-through mb-1">{t('payment_modal_original_price')}</p>
+            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">{t('payment_modal_promo_title')}</h3>
+            <p className="text-gray-500 line-through mt-2">{t('payment_modal_original_price')}</p>
+            <p className="text-sm text-stone-800">{t('payment_modal_for_just')}</p>
+            <p className="text-5xl font-bold text-amber-600 my-1">{t('payment_modal_promo_price')}</p>
             <p className="text-sm text-green-600 font-semibold mb-4">{t('payment_modal_instant_access')}</p>
             
             <img src={qrData?.brCodeBase64} alt="PIX QR Code" className="mx-auto w-48 h-48 border-4 border-stone-200 rounded-lg shadow-md" />
@@ -162,16 +169,10 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
         );
       case 'paid':
          return (
-            <div className="text-center py-4 flex flex-col items-center">
+            <div className="text-center py-4 flex flex-col items-center min-h-[400px] justify-center">
                 <CheckCircleIcon className="w-20 h-20 text-green-500 mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-stone-800">{t('payment_modal_paid_title')}</h2>
                 <p className="text-stone-600 mb-6">{t('payment_modal_paid_subtitle')}</p>
-                <button
-                    onClick={onClose}
-                    className="w-full px-6 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700 transition-colors"
-                >
-                    {t('payment_modal_success_button')}
-                </button>
             </div>
          );
       case 'expired':
@@ -210,9 +211,9 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
         className="bg-white rounded-2xl shadow-xl w-full max-w-sm transform transition-all duration-300"
         onClick={e => e.stopPropagation()}
       >
-        <div className="p-4 sm:p-6 bg-stone-50 rounded-t-2xl border-b border-stone-200 flex items-center gap-2">
+        <div className="p-4 sm:p-6 bg-stone-50 rounded-t-2xl border-b border-stone-200 flex items-center justify-center gap-2">
             <ShieldCheckIcon className="w-5 h-5 text-green-600" />
-            <h3 className="text-sm font-semibold text-stone-600">{t('payment_modal_secure_title')}</h3>
+            <h3 className="text-xs font-semibold text-stone-600">{t('payment_modal_secure_title')}</h3>
         </div>
         <div className="p-4 sm:p-6">
             {renderContent()}
