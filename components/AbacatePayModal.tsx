@@ -137,39 +137,39 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
   const renderContent = () => {
     switch (step) {
       case 'loading_qr':
-        return <div className="min-h-[400px] flex items-center justify-center"><Loader text={t('payment_modal_generating')} /></div>;
+        return <div className="min-h-[350px] flex items-center justify-center"><Loader text={t('payment_modal_generating')} /></div>;
       case 'display_qr':
         return (
-          <div className="text-center">
-            <h3 className="text-sm font-bold text-red-600 uppercase tracking-wider">{t('payment_modal_promo_title')}</h3>
-            <p className="text-gray-500 line-through mt-2">{t('payment_modal_original_price')}</p>
-            <p className="text-sm text-stone-800">{t('payment_modal_for_just')}</p>
-            <p className="text-5xl font-bold text-amber-600 my-1">{`R$ ${pixValue}`}</p>
-            <p className="text-sm text-green-600 font-semibold mb-4">{t('payment_modal_instant_access')}</p>
+          <div className="text-center flex flex-col items-center">
+            <h3 className="text-xs font-bold text-red-600 uppercase tracking-wider">{t('payment_modal_promo_title')}</h3>
+            <p className="text-sm text-gray-500 line-through mt-1">{t('payment_modal_original_price')}</p>
+            <p className="text-xs text-stone-800">{t('payment_modal_for_just')}</p>
+            <p className="text-4xl font-bold text-amber-600">{`R$ ${pixValue}`}</p>
+            <p className="text-xs text-green-600 font-semibold mb-2">{t('payment_modal_instant_access')}</p>
             
-            <img src={qrData?.brCodeBase64} alt="PIX QR Code" className="mx-auto w-48 h-48 border-4 border-stone-200 rounded-lg shadow-md" />
+            <img src={qrData?.brCodeBase64} alt="PIX QR Code" className="mx-auto w-40 h-40 border-2 border-stone-200 rounded-lg shadow-md" />
             
-            <div className="my-4">
+            <div className="my-3 w-full">
               <button 
                 onClick={handleCopy}
-                className={`w-full flex items-center justify-center gap-2 px-4 py-3 font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors ${
+                className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors ${
                   isCopied
                     ? 'bg-green-700 text-white'
                     : 'bg-green-600 text-white hover:bg-green-700'
                 }`}
               >
-                {isCopied ? <CheckCircleIcon className="w-6 h-6" /> : <ClipboardCopyIcon className="w-6 h-6" />}
-                <span>{isCopied ? t('results_link_copied') : t('payment_modal_copy_button')}</span>
+                {isCopied ? <CheckCircleIcon className="w-5 h-5" /> : <ClipboardCopyIcon className="w-5 h-5" />}
+                <span className="text-sm">{isCopied ? t('results_link_copied') : t('payment_modal_copy_button')}</span>
               </button>
             </div>
 
-            <div className="text-center font-semibold text-red-600 my-4">
+            <div className="text-center text-sm font-semibold text-red-600 mb-2">
                 {t('payment_modal_expires_in')} {formatTime(countdown)}
             </div>
             <button
               onClick={handleManualCheck}
               disabled={isChecking}
-              className="w-full flex justify-center items-center gap-2 px-6 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700 transition-colors disabled:bg-stone-400"
+              className="w-full flex justify-center items-center gap-2 px-6 py-2.5 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700 transition-colors disabled:bg-stone-400"
             >
               {isChecking && <SpinnerIcon className="w-5 h-5" />}
               {isChecking ? t('payment_modal_checking') : t('payment_modal_check_payment')}
@@ -178,8 +178,8 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
         );
       case 'paid':
          return (
-            <div className="text-center py-4 flex flex-col items-center min-h-[400px] justify-center">
-                <CheckCircleIcon className="w-20 h-20 text-green-500 mx-auto mb-4" />
+            <div className="text-center py-4 flex flex-col items-center justify-center min-h-[350px]">
+                <CheckCircleIcon className="w-16 h-16 text-green-500 mx-auto mb-3" />
                 <h2 className="text-2xl font-bold text-stone-800">{t('payment_modal_paid_title')}</h2>
                 <p className="text-stone-600 mb-6">{t('payment_modal_paid_subtitle')}</p>
                 <button
@@ -226,14 +226,14 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
         className="bg-white rounded-2xl shadow-xl w-full max-w-sm transform transition-all duration-300"
         onClick={e => e.stopPropagation()}
       >
-        <div className="p-4 sm:p-6 bg-stone-50 rounded-t-2xl border-b border-stone-200 flex items-center justify-center gap-2">
+        <div className="p-3 bg-stone-50 rounded-t-2xl border-b border-stone-200 flex items-center justify-center gap-2">
             <ShieldCheckIcon className="w-5 h-5 text-green-600" />
-            <h3 className="text-xs font-semibold text-stone-600">{t('payment_modal_secure_title')}</h3>
+            <h3 className="text-xs font-semibold text-stone-600 text-center">{t('payment_modal_secure_title')}</h3>
         </div>
         <div className="p-4 sm:p-6">
             {renderContent()}
         </div>
-        <div className="p-4 bg-stone-50 rounded-b-2xl border-t border-stone-200 flex items-center justify-center gap-4 text-xs text-stone-500">
+        <div className="p-3 bg-stone-50 rounded-b-2xl border-t border-stone-200 flex items-center justify-center gap-4 text-xs text-stone-500">
             <span className="flex items-center gap-1"><ShieldCheckIcon className="w-4 h-4" /> {t('payment_modal_secure_badge')}</span>
             <span className="flex items-center gap-1"><CheckCircleIcon className="w-4 h-4" /> {t('payment_modal_satisfaction_guarantee')}</span>
         </div>
