@@ -158,7 +158,7 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
               {isChecking && <SpinnerIcon className="w-5 h-5" />}
               {isChecking ? t('payment_modal_checking') : t('payment_modal_check_payment')}
             </button>
-          </>
+          </div>
         );
       case 'paid':
          return (
