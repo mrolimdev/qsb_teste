@@ -239,6 +239,7 @@ export default {
   "payment_modal_satisfaction_guarantee": "Garantia de Satisfação",
   "payment_modal_secure_badge": "Compra Segura",
   "payment_modal_copy_button": "Copiar Código PIX",
+  "payment_modal_ok_button": "OK",
   "payment_modal_generating": "Gerando seu PIX...",
   "payment_modal_expires_in": "Este código expira em:",
   "payment_modal_check_payment": "Verificar Pagamento",

@@ -81,16 +81,12 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
     return () => clearInterval(interval);
   }, [step, qrData]);
   
-  // Handle successful payment: update DB, then trigger redirect after a delay
+  // Handle successful payment: update DB once.
   useEffect(() => {
     if (step === 'paid') {
       onPaymentSuccess(); // Update DB and user status in the parent
-      const timer = setTimeout(() => {
-        onFlowComplete(); // This will close the modal and redirect to home
-      }, 5000); // 5 second delay
-      return () => clearTimeout(timer);
     }
-  }, [step, onPaymentSuccess, onFlowComplete]);
+  }, [step, onPaymentSuccess]);
 
   const handleManualCheck = async () => {
     if (!qrData) return;
@@ -173,6 +169,12 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
                 <CheckCircleIcon className="w-20 h-20 text-green-500 mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-stone-800">{t('payment_modal_paid_title')}</h2>
                 <p className="text-stone-600 mb-6">{t('payment_modal_paid_subtitle')}</p>
+                <button
+                  onClick={onFlowComplete}
+                  className="w-full px-6 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-md hover:bg-amber-700 transition-colors"
+                >
+                  {t('payment_modal_ok_button')}
+                </button>
             </div>
          );
       case 'expired':
