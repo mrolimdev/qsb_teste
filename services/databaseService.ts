@@ -323,22 +323,23 @@ export const grantPremiumAccess = async (email: string): Promise<void> => {
   }
 };
 
-export const getPixValue = async (): Promise<string> => {
+export const getPixValue = async (): Promise<string | null> => {
   const { data, error } = await supabase
     .from('qsb_config')
     .select('valorconfig')
     .eq('nomeconfig', 'valorpix')
     .single();
 
-  if (error && error.code !== 'PGRST116') {
-    console.error('Error fetching PIX value:', error.message);
-    // In case of a real error, still default to a working value
-    return '49,90';
+  if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
+    console.error('Error fetching PIX value from database. This could be an RLS policy issue.', error);
+    throw error; // Throw the actual error to be caught by the caller
   }
   
+  // If no data is found (either by error PGRST116 or just empty), return null.
+  // This allows the frontend to set a sensible default.
   if (!data?.valorconfig) {
-    console.warn('PIX value not found in qsb_config, defaulting to 49,90.');
-    return '49,90'; // Default value if config is not set
+      console.warn('PIX value for "valorpix" not found in qsb_config table.');
+      return null;
   }
   
   return data.valorconfig;

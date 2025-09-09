@@ -122,11 +122,17 @@ const App: React.FC = () => {
         getPixValue()
       ]);
       setCharacters(fetchedCharacters);
-      setPixValue(fetchedPixValue);
+      
+      if (fetchedPixValue) {
+        setPixValue(fetchedPixValue);
+      } else {
+        console.warn('PIX value not found in database, using fallback value "49,90".');
+        setPixValue('49,90'); // Fallback if DB value is null/not found
+      }
 
     } catch (error) {
-      console.error("Failed to initialize app:", error);
-      setPixValue('49,90'); // Fallback value on error
+      console.error("Failed to initialize app. This might be a database connection or RLS policy issue. Using fallback PIX value.", error);
+      setPixValue('49,90'); // Fallback value on any initialization error
     } finally {
       setIsLoadingApp(false);
     }
