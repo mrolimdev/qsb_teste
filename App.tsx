@@ -475,6 +475,7 @@ const App: React.FC = () => {
                     characters={characters}
                     viewMode={resultsViewMode}
                     pixValue={pixValue}
+                    isAdmin={isAdmin}
                   />;
         }
         return <WelcomeScreen onStart={handleStartTest} hasPreviousResult={hasPreviousResult} />;

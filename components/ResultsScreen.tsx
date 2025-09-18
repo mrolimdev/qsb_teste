@@ -30,9 +30,10 @@ interface ResultsScreenProps {
   characters: Character[];
   viewMode: 'result' | 'profile';
   pixValue: string | null;
+  isAdmin: boolean;
 }
 
-const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userInfo, userEmail, onRetake, preloadedAnalysis, onNavigate, checkUserStatus, onStartTest, hasPreviousResult, characters, viewMode, pixValue }) => {
+const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userInfo, userEmail, onRetake, preloadedAnalysis, onNavigate, checkUserStatus, onStartTest, hasPreviousResult, characters, viewMode, pixValue, isAdmin }) => {
   const { t, i18n } = useTranslation();
   const [currentUserInfo, setCurrentUserInfo] = useState<UserInfo | null>(userInfo);
   const [personalizedAnalysis, setPersonalizedAnalysis] = useState<Json | null>(preloadedAnalysis || null);
@@ -54,7 +55,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userIn
     return scores || getScoresFromUserInfo(currentUserInfo);
   }, [scores, currentUserInfo, isFullReportView]);
   
-  const isPremiumBlocked = isFullReportView && String(currentUserInfo?.acesso) !== '1' && !!displayScores;
+  const isPremiumBlocked = isFullReportView && String(currentUserInfo?.acesso) !== '1' && !!displayScores && !isAdmin;
 
   const handleSendEmail = async () => {
     if (!userEmail || !character) return;
