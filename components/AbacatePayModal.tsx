@@ -4,6 +4,7 @@ import { createPixQrCode, checkPixPaymentStatus } from '../services/paymentServi
 import { PixQrCodeData } from '../types';
 import Loader from './Loader';
 import { SpinnerIcon, ClipboardCopyIcon, CheckCircleIcon, ShieldCheckIcon } from './icons';
+import { trackMetaEvent } from '../utils/tracking';
 
 interface AbacatePayModalProps {
   isOpen: boolean;
@@ -44,6 +45,14 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
       setQrData(data);
       setCountdown(600);
       setStep('display_qr');
+
+      const value = parseFloat(pixValue.replace(',', '.'));
+      trackMetaEvent('InitiateCheckout', {
+          value: value,
+          currency: 'BRL',
+          content_name: 'Acesso Premium - Relatório Completo',
+      });
+
     } catch (error) {
       console.error("Erro capturado no AbacatePayModal ao gerar QR code:", error);
       const detailedMessage = error instanceof Error ? error.message : "Falha ao gerar o QR Code.";
@@ -80,6 +89,14 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
         const statusData = await checkPixPaymentStatus(qrData.id);
         if (statusData.status === 'PAID') {
           clearInterval(interval);
+          if (pixValue) {
+            const value = parseFloat(pixValue.replace(',', '.'));
+            trackMetaEvent('Purchase', {
+                value: value,
+                currency: 'BRL',
+                content_name: 'Acesso Premium - Relatório Completo',
+            });
+          }
           await onPaymentSuccess(); // Await parent logic (DB update, navigation)
           setStep('paid'); // Then show success screen
         }
@@ -94,7 +111,7 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
     }, 10000); // Check every 10 seconds
 
     return () => clearInterval(interval);
-  }, [step, qrData, onPaymentSuccess, isChecking]);
+  }, [step, qrData, onPaymentSuccess, isChecking, pixValue]);
   
   const handleManualCheck = async () => {
     if (!qrData || isChecking) return;
@@ -102,6 +119,14 @@ const AbacatePayModal: React.FC<AbacatePayModalProps> = ({ isOpen, onClose, user
     try {
       const statusData = await checkPixPaymentStatus(qrData.id);
       if (statusData.status === 'PAID') {
+        if (pixValue) {
+            const value = parseFloat(pixValue.replace(',', '.'));
+            trackMetaEvent('Purchase', {
+                value: value,
+                currency: 'BRL',
+                content_name: 'Acesso Premium - Relatório Completo',
+            });
+        }
         await onPaymentSuccess(); // Await parent logic
         setStep('paid'); // Then show success screen
       }
