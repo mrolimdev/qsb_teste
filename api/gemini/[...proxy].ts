@@ -2,7 +2,7 @@
 // It is designed to be deployed as a Vercel Edge Function.
 // It resolves API key security issues by handling the key on the server.
 
-// You MUST set the API_KEY as an environment variable in your Vercel project settings.
+// You MUST set the GEMINI_KEY as an environment variable in your Vercel project settings.
 
 export const config = {
   runtime: 'edge',
@@ -10,9 +10,9 @@ export const config = {
 
 export default async function handler(request: Request) {
   try {
-    const apiKey = process.env.API_KEY;
+    const apiKey = process.env.GEMINI_KEY;
     if (!apiKey) {
-      console.error('API_KEY environment variable not set on Vercel.');
+      console.error('GEMINI_KEY environment variable not set on Vercel.');
       return new Response(
         JSON.stringify({ error: { message: 'API key is not configured on the server.' } }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }

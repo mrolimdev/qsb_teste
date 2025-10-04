@@ -3,7 +3,6 @@ import { getTranslatedValue } from '../utils/translation';
 
 // Using a relative path for the proxy is more robust and avoids CORS issues.
 const API_URL = '/api/gemini/v1beta/models/gemini-2.5-flash:generateContent';
-const API_KEY = process.env.API_KEY;
 
 // Local enum for GenaiType since the SDK is removed
 enum Type {
