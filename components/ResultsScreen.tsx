@@ -71,7 +71,11 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userIn
 
         const params = new URLSearchParams();
         params.append('email', userEmail);
-        params.append('idioma', i18n.language);
+        
+        const lang = i18n.language.split('-')[0].toUpperCase();
+        const languageParam = lang === 'EN' ? 'US' : lang;
+        params.append('linguagem', languageParam);
+        
         params.append('relatorio_html', reportHtml);
         
         const response = await fetch(SEND_REPORT_WEBHOOK_URL, {

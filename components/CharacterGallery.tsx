@@ -25,9 +25,18 @@ const CharacterGallery: React.FC<CharacterGalleryProps> = ({ characters, isLoadi
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const isLangPt = i18n.language.startsWith('pt');
+
   useEffect(() => {
     onRefresh();
   }, [onRefresh]);
+
+  useEffect(() => {
+    // Reset audio filter if language is not Portuguese to avoid hidden filtering
+    if (!isLangPt) {
+      setAudioFilter('all');
+    }
+  }, [isLangPt]);
 
   const shuffledCharacters = useMemo(() => {
     return [...characters].sort(() => Math.random() - 0.5);
@@ -50,7 +59,7 @@ const CharacterGallery: React.FC<CharacterGalleryProps> = ({ characters, isLoadi
         currentCharacters = currentCharacters.filter(c => c.mainTrait === profileFilter);
     }
 
-    if (audioFilter !== 'all') {
+    if (audioFilter !== 'all' && isLangPt) {
         currentCharacters = currentCharacters.filter(c => {
             if (audioFilter === 'with') return !!c.audio;
             if (audioFilter === 'without') return !c.audio;
@@ -65,9 +74,10 @@ const CharacterGallery: React.FC<CharacterGalleryProps> = ({ characters, isLoadi
     }
     
     return currentCharacters;
-  }, [genderFilter, profileFilter, audioFilter, sortOrder, characters, shuffledCharacters, i18n.language, searchTerm]);
+  }, [genderFilter, profileFilter, audioFilter, sortOrder, characters, shuffledCharacters, i18n.language, searchTerm, isLangPt]);
 
   const profileOptions = Object.entries(ENEAGRAMA_FILTER_NAMES);
+  const gridColsClass = isLangPt ? 'md:grid-cols-5' : 'md:grid-cols-4';
 
   return (
     <div className="w-full animate-fade-in">
@@ -89,7 +99,7 @@ const CharacterGallery: React.FC<CharacterGalleryProps> = ({ characters, isLoadi
 
         <div 
           id="filter-panel"
-          className={`${isFilterOpen ? 'grid' : 'hidden'} mt-4 md:mt-0 md:grid grid-cols-1 md:grid-cols-5 gap-4 items-end transition-all duration-300`}
+          className={`${isFilterOpen ? 'grid' : 'hidden'} mt-4 md:mt-0 md:grid grid-cols-1 ${gridColsClass} gap-4 items-end transition-all duration-300`}
         >
           <div className="flex flex-col">
             <label htmlFor="search-filter" className="text-sm font-semibold text-stone-600 mb-2">{t('gallery_search_by_name')}</label>
@@ -119,20 +129,22 @@ const CharacterGallery: React.FC<CharacterGalleryProps> = ({ characters, isLoadi
             </select>
           </div>
           
-          <div className="flex flex-col">
-            <label htmlFor="audio-filter" className="text-sm font-semibold text-stone-600 mb-2">{t('gallery_filter_by_audio')}</label>
-            <select
-              id="audio-filter"
-              value={audioFilter}
-              onChange={(e) => setAudioFilter(e.target.value)}
-              className="w-full p-2.5 border border-stone-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500"
-              aria-label={t('gallery_filter_by_audio')}
-            >
-              <option value="all">{t('audio_filter_all')}</option>
-              <option value="with">{t('audio_filter_with')}</option>
-              <option value="without">{t('audio_filter_without')}</option>
-            </select>
-          </div>
+          {isLangPt && (
+            <div className="flex flex-col">
+              <label htmlFor="audio-filter" className="text-sm font-semibold text-stone-600 mb-2">{t('gallery_filter_by_audio')}</label>
+              <select
+                id="audio-filter"
+                value={audioFilter}
+                onChange={(e) => setAudioFilter(e.target.value)}
+                className="w-full p-2.5 border border-stone-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500"
+                aria-label={t('gallery_filter_by_audio')}
+              >
+                <option value="all">{t('audio_filter_all')}</option>
+                <option value="with">{t('audio_filter_with')}</option>
+                <option value="without">{t('audio_filter_without')}</option>
+              </select>
+            </div>
+          )}
 
           <div className="flex flex-col">
             <label htmlFor="gender-filter" className="text-sm font-semibold text-stone-600 mb-2">{t('gallery_filter_by_gender')}</label>

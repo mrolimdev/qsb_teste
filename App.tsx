@@ -281,6 +281,9 @@ const App: React.FC = () => {
     const params = new URLSearchParams();
     params.append('email', email);
     params.append('codigo', verificationCode);
+    const lang = i18n.language.split('-')[0].toUpperCase();
+    const languageParam = lang === 'EN' ? 'US' : lang;
+    params.append('linguagem', languageParam);
 
     try {
       const response = await fetch(SEND_CODE_WEBHOOK_URL, {
