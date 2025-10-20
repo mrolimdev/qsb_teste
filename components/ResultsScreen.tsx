@@ -13,7 +13,7 @@ import { getTranslatedValue } from '../utils/translation';
 import { Json } from '../services/database.types';
 import { generateReportHtml } from '../utils/reportGenerator';
 import { getScoresFromUserInfo } from '../utils/scoreUtils';
-import { SEND_REPORT_WEBHOOK_URL } from '../config';
+import { SEND_REPORT_WEBHOOK_URL, HOTMART_CHECKOUT_URL } from '../config';
 import AbacatePayModal from './AbacatePayModal';
 
 interface ResultsScreenProps {
@@ -158,11 +158,21 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userIn
       if (updatedUserInfo) {
           setCurrentUserInfo(updatedUserInfo);
       }
-      onNavigate('welcome'); // Navigate AFTER DB work is done.
+      setIsPaymentModalOpen(false); // Close modal on success
+      // Let the success screen inside the modal handle user action.
+      // Maybe navigate to a thank you / welcome premium screen if needed in the future.
     } catch(error) {
         console.error("Critical Error: Payment was successful but failed to update user profile.", error);
         // This error will be propagated to the payment modal to show an error state.
         throw new Error("Seu pagamento foi confirmado, mas houve um erro ao liberar seu acesso. Por favor, contate o suporte.");
+    }
+  };
+
+  const handleUnlockPremium = () => {
+    if (i18n.language.startsWith('pt')) {
+      setIsPaymentModalOpen(true);
+    } else {
+      window.location.href = HOTMART_CHECKOUT_URL;
     }
   };
 
@@ -269,7 +279,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ character, scores, userIn
                   {t('premium_lock_description')}
                 </p>
                 <button
-                  onClick={() => setIsPaymentModalOpen(true)}
+                  onClick={handleUnlockPremium}
                   className="w-full sm:w-auto px-8 py-4 bg-amber-600 text-white font-bold rounded-full shadow-lg hover:bg-amber-700 transform hover:scale-105 transition-all duration-300 ease-in-out text-lg flex items-center justify-center"
                 >
                   {t('premium_lock_button_unlock')}

@@ -12,3 +12,6 @@ export const SEND_CODE_WEBHOOK_URL = 'https://api.automacao.click/webhook/602677
 export const SEND_REPORT_WEBHOOK_URL = 'https://api.automacao.click/webhook/d0321eca-5759-4cc1-a023-12efd25b0494';
 export const ADMIN_EMAIL = 'contato@marciorolim.com.br';
 export const GA_TRACKING_ID = 'G-MPH04BBNKP';
+
+// URL de checkout da Hotmart para usuários de língua inglesa e espanhola.
+export const HOTMART_CHECKOUT_URL = 'https://hotm.art/D7HtNQCh';
